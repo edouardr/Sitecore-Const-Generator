@@ -11,9 +11,9 @@
 <#
 /*
 	Settings
-*/;
-	string sitecoreUrl = "http://dev.toyota.local";
-	string templateRootPath = "/sitecore/templates/User Defined/Toyota/Main Site";
+*/
+	string sitecoreUrl = "http://YOUR_URL_HERE";
+	string templateRootPath = "/your/path/here";
 
 	var hostServiceProvider = (IServiceProvider)Host;
 	var dte = 
