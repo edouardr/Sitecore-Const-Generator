@@ -1,0 +1,55 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Core.dll" #>
+<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Infrastructure.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="SitecoreConstGenerator.Core.Entities" #>
+<#@ import namespace="SitecoreConstGenerator.Core.Interfaces.Repositories" #>
+<#@ import namespace="SitecoreConstGenerator.Infrastructure.Repositories" #>
+<#
+/*
+	Settings
+*/;
+	string sitecoreUrl = "http://dev.toyota.local";
+	string templateRootPath = "/sitecore/templates/User Defined/Toyota/Main Site";
+
+	var hostServiceProvider = (IServiceProvider)Host;
+	var dte = 
+		(EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
+	var activeSolutionProjects = (Array)dte.ActiveSolutionProjects;
+	var dteProject = (EnvDTE.Project)activeSolutionProjects.GetValue(0);
+	var defaultNamespace = 
+		dteProject.Properties.Item("DefaultNamespace").Value;
+	var templateDir = Path.GetDirectoryName(Host.TemplateFile);
+	var fullPath = dteProject.Properties.Item("FullPath").Value.ToString();
+	fullPath = 
+		fullPath.EndsWith("\\") 
+			? fullPath.Substring(0, fullPath.Length-1) 
+			: fullPath;
+	var subNamespace = 
+		templateDir.Replace(fullPath, string.Empty).Replace("\\", ".");
+	var fileNamespace = string.Concat(defaultNamespace, subNamespace);
+#>
+
+namespace <#= fileNamespace #>
+{
+    public static class FieldIds
+    {
+<#
+	IWebApiRepository webApiRepo = new WebApiRepository();
+	IT4TemplateRepository fieldsRepo = new FieldsT4TemplateRepository();
+
+    RequestResult response =  webApiRepo.RequestFieldsIds(sitecoreUrl, templateRootPath);
+	
+	var tree = fieldsRepo.CreateTree(response.Result.Items);
+	foreach(var node in tree)
+    { 
+#>
+	<#= fieldsRepo.Output(node) #>
+<#
+	}
+#>
+	}
+}
