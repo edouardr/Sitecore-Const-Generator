@@ -1,15 +1,13 @@
-﻿using SitecoreConstGenerator.Core.Constants;
-using SitecoreConstGenerator.Core.Interfaces.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using SitecoreConstGenerator.Core.Interfaces.Entities;
 
 namespace SitecoreConstGenerator.Core.Entities
 {
     public class Item : IWebApiItem
     {
+        private Guid _parentId;
+
         public string Category { get; set; }
 
         public string Database { get; set; }
@@ -20,7 +18,7 @@ namespace SitecoreConstGenerator.Core.Entities
 
         public string Icon { get; set; }
 
-        public System.Guid ID { get; set; }
+        public Guid ID { get; set; }
 
         public string Language { get; set; }
 
@@ -32,26 +30,31 @@ namespace SitecoreConstGenerator.Core.Entities
 
         public string Path { get; set; }
 
-        public System.Guid ParentId 
+        public Guid ParentId 
         {
             get
             { 
                 if(string.IsNullOrEmpty(this.LongID))
-                    throw new ArgumentNullException("LongID");
+                    throw new ArgumentNullException(@"LongID");
 
-                String[] ids = this.LongID.Split('/');
+                if (this._parentId.Equals(Guid.Empty))
+                {
+                    String[] ids = this.LongID.Split('/');
 
-                return new Guid(ids[ids.Count() - 2]);
+                    this._parentId = new Guid(ids[ids.Count() - 2]);
+                }
+
+                return this._parentId;
             }
             set
             {
-                this.ParentId = value;
+                this._parentId = value;
             }
         }
 
         public string Template { get; set; }
 
-        public System.Guid TemplateId { get; set; }
+        public Guid TemplateId { get; set; }
 
         public string TemplateName { get; set; }
 

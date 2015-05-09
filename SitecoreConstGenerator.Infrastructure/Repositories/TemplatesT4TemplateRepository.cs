@@ -6,53 +6,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using RestSharp;
+using SitecoreConstGenerator.Core.Interfaces.Entities;
 
 namespace SitecoreConstGenerator.Infrastructure.Repositories
 {
     public class TemplatesT4TemplateRepository : IT4TemplateRepository
     {
-        public IEnumerable<ItemNode> CreateTree(IEnumerable<Item> items)
+        public IWebApiRepository Repo { get; set; }
+
+        public TemplatesT4TemplateRepository(IWebApiRepository repo)
         {
-            if (null == items)
-                throw new ArgumentNullException("items");
-
-            if (0 >= items.Count())
-                return null;
-
-            List<Item> list = items
-                .OrderBy(i => i.Path)
-                .ToList();
-
-            list.RemoveAll(i => i.DisplayName.Equals("__Standard Values")
-                || TemplatesId.TemplateFieldId.Equals(i.TemplateId.ToString("B").ToUpper()));
-
-            Dictionary<Guid, ItemNode> lookup = new Dictionary<Guid, ItemNode>();
-            list.ForEach(x =>
-            {
-                try
-                {
-                    lookup.Add(x.ID, new ItemNode { Value = x });
-                }
-                catch (Exception)
-                {
-                    // already added this key
-                }
-            });
-
-            foreach (var item in lookup.Values)
-            {
-                ItemNode proposedParent;
-                if (lookup.TryGetValue(item.Value.ParentId, out proposedParent))
-                {
-                    item.ParentId = proposedParent.Value.ID;
-                    if (null == proposedParent.Children)
-                        proposedParent.Children = new List<ItemNode>();
-
-                    proposedParent.Children.Add(item);
-                }
-            }
-            return lookup.Values.Where(x => x.ParentId == null || x.ParentId.Equals(Guid.Empty));
+            this.Repo = repo;
         }
+
+        public IEnumerable<ItemNode> CreateTree(string rootPath)
+        {
+            // get items
+            Task<IWebApiRequestResult<Result, Item>> task = this.Repo.RequestTemplatesIdsAsync(rootPath);
+            RequestResult result = task.Result as RequestResult;
+            if (result != null)
+            {
+                IEnumerable<Item> items = result.Result.Items;
+
+                if (null == items)
+                    throw new ArgumentNullException(@"items");
+
+                var enumerable = items as Item[] ?? items.ToArray();
+                if (!enumerable.Any())
+                    return null;
+
+                List<Item> list = enumerable
+                    .OrderBy(i => i.Path)
+                    .ToList();
+
+                list.RemoveAll(i => i.DisplayName.Equals("__Standard Values")
+                                    || TemplatesId.TemplateFieldId.Equals(i.TemplateId.ToString("B").ToUpper()));
+
+                Dictionary<Guid, ItemNode> lookup = new Dictionary<Guid, ItemNode>();
+                list.ForEach(x =>
+                {
+                    try
+                    {
+                        lookup.Add(x.ID, new ItemNode { Value = x });
+                    }
+                    catch (Exception)
+                    {
+                        // already added this key
+                    }
+                });
+
+                foreach (var item in lookup.Values)
+                {
+                    ItemNode proposedParent;
+                    if (lookup.TryGetValue(item.Value.ParentId, out proposedParent))
+                    {
+                        item.ParentId = proposedParent.Value.ID;
+                        if (null == proposedParent.Children)
+                            proposedParent.Children = new List<ItemNode>();
+
+                        proposedParent.Children.Add(item);
+                    }
+                }
+                return lookup.Values.Where(x => x.ParentId == null || x.ParentId.Equals(Guid.Empty));
+            }
+
+            return null;
+        }
+
 
         public String Output(Item item)
         {
@@ -66,7 +88,6 @@ namespace SitecoreConstGenerator.Infrastructure.Repositories
                         item.ID.ToString("B").ToUpper());
                     sb.AppendLine();
                     break;
-                case TemplatesId.TemplateFolderId:
                 default:
                     sb.AppendFormat("public class {0} ", Regex.Replace(item.DisplayName, @"\s+", ""));
                     sb.AppendLine();
@@ -86,7 +107,7 @@ namespace SitecoreConstGenerator.Infrastructure.Repositories
                 ? TemplatesId.TemplateId.Equals(node.Value.TemplateId.ToString("B").ToUpper())
                     ? this.Output(node.Value)
                     : String.Format(this.Output(node.Value), Environment.NewLine)
-                : String.Format(this.Output(node.Value), String.Join(" ", node.Children.Select(c => this.Output(c))));
+                : String.Format(this.Output(node.Value), String.Join(" ", node.Children.Select(this.Output)));
         }
     }
 }

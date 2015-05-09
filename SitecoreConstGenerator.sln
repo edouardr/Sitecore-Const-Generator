@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreConstGenerator.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreConstGenerator.Infrastructure", "SitecoreConstGenerator.Infrastructure\SitecoreConstGenerator.Infrastructure.csproj", "{7636E338-2913-484D-9312-590607DD03E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreConstGenerator.Resources", "SitecoreConstGenerator.Resources\SitecoreConstGenerator.Resources.csproj", "{00F6BE8D-61B5-440E-A4CD-A268F7D63127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7636E338-2913-484D-9312-590607DD03E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7636E338-2913-484D-9312-590607DD03E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7636E338-2913-484D-9312-590607DD03E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,10 +45,12 @@
   <ItemGroup>
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\TemplatesId.cs" />
+    <Compile Include="Constants\WebApiConstants.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\ItemNode.cs" />
     <Compile Include="Entities\RequestResult.cs" />
     <Compile Include="Entities\Result.cs" />
+    <Compile Include="Interfaces\Api\IRestApi.cs" />
     <Compile Include="Interfaces\Entities\IWebApiItem.cs" />
     <Compile Include="Interfaces\Entities\IWebApiRequestResult.cs" />
     <Compile Include="Interfaces\Entities\IWebApiResult.cs" />
@@ -53,6 +59,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

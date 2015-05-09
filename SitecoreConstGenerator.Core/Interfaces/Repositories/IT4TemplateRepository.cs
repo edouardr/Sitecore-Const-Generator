@@ -5,7 +5,9 @@ namespace SitecoreConstGenerator.Core.Interfaces.Repositories
 {
     public interface IT4TemplateRepository
     {
-        IEnumerable<Core.Entities.ItemNode> CreateTree(IEnumerable<Core.Entities.Item> items);
+        IWebApiRepository Repo { get; set; }
+
+        IEnumerable<Core.Entities.ItemNode> CreateTree(string rootPath);
 
         String Output(Core.Entities.Item item);
 

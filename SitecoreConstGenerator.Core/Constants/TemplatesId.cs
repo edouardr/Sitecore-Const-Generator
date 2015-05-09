@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SitecoreConstGenerator.Core.Constants
+﻿namespace SitecoreConstGenerator.Core.Constants
 {
-    public class TemplatesId
+    public static class TemplatesId
     {
         public const string TemplateId = @"{AB86861A-6030-46C5-B394-E8F99E8B87DB}";
         public const string TemplateFolderId = @"{0437FEE2-44C9-46A6-ABE9-28858D9FEE8C}";

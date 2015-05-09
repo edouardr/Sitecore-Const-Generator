@@ -1,7 +1,5 @@
-﻿using SitecoreConstGenerator.Core.Constants;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SitecoreConstGenerator.Core.Entities
 {

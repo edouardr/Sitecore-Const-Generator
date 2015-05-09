@@ -9,12 +9,34 @@
 <#@ import namespace="SitecoreConstGenerator.Core.Interfaces.Repositories" #>
 <#@ import namespace="SitecoreConstGenerator.Infrastructure.Repositories" #>
 <#
-/*
-	Settings
-*/
-	string sitecoreUrl = "http://YOUR_URL_HERE";
-	string templateRootPath = "/your/path/here";
+/************************************************************
+*															*
+*					   Settings							    *
+*															*
+************************************************************/
 
+
+/************************************************************
+*															*
+*					   Urls								    *
+*															*
+************************************************************/
+	String baseUrl = @"http://YOUR_URL_HERE";
+	String templateRootPath = @"/your/path/here";
+
+/************************************************************
+*															*
+*					 Authentication						    *
+*															*
+************************************************************/
+	Boolean useAuthenticatedRequest = false;
+	String userName = @"";
+	String password = @"";
+#>
+
+// Auto Generated script
+
+<#
 	var hostServiceProvider = (IServiceProvider)Host;
 	var dte = 
 		(EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
@@ -38,16 +60,31 @@ namespace <#= fileNamespace #>
     public static class TemplateIds
     {
 <#
-	IWebApiRepository webApiRepo = new WebApiRepository();
-	IT4TemplateRepository templatesRepo = new TemplatesT4TemplateRepository();
-
-    RequestResult response =  webApiRepo.RequestTemplatesIds(sitecoreUrl, templateRootPath);
+	try
+	{
+		IT4TemplateRepository templatesRepo = new TemplatesT4TemplateRepository(
+			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest));
 	
-	var tree = templatesRepo.CreateTree(response.Result.Items);
-	foreach(var node in tree)
-    { 
+		var tree = templatesRepo.CreateTree(templateRootPath);
+		if(null != tree)
+        {
+			foreach(var node in tree)
+			{  
 #>
 	<#= templatesRepo.Output(node) #>
+<#
+			}
+        }
+	}
+	catch(Exception ae)
+	{
+#>
+		// Error while retrieving items. 
+		// Message : <#= ae.Message #>
+		// See stack trace below for more information :
+		/*
+		<#= ae.StackTrace #>
+		*/
 <#
 	}
 #>
