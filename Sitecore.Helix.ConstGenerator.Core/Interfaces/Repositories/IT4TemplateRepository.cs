@@ -5,9 +5,7 @@
 
     public interface IT4TemplateRepository
     {
-        IWebApiRepository Repo { get; set; }
-
-        IEnumerable<ItemNode> CreateTree(string rootPath);
+        IEnumerable<ItemNode> CreateTree();
 
         string Output(Item item);
 

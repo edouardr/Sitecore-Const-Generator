@@ -2,12 +2,11 @@
 <#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="EnvDTE" #>
-<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Core.dll" #>
-<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Infrastructure.dll" #>
+<#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Core.dll" #>
+<#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Infrastructure.dll" #>
 <#@ import namespace="System.IO" #>
-<#@ import namespace="SitecoreConstGenerator.Core.Entities" #>
-<#@ import namespace="SitecoreConstGenerator.Core.Interfaces.Repositories" #>
-<#@ import namespace="SitecoreConstGenerator.Infrastructure.Repositories" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Interfaces.Repositories" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Infrastructure.Repositories" #>
 <#
 /************************************************************
 *															*
@@ -63,9 +62,9 @@ namespace <#= fileNamespace #>
 	try
 	{
 		IT4TemplateRepository fieldsRepo = new FieldsT4TemplateRepository(
-			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest));
+			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest), templateRootPath);
 
-		var tree = fieldsRepo.CreateTree(templateRootPath);
+		var tree = fieldsRepo.CreateTree();
 		if(null != tree)
         {
 			foreach(var node in tree)

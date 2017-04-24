@@ -1,12 +1,12 @@
 ﻿namespace Sitecore.Helix.ConstGenerator.Core.Constants
 {
-    public static class Settings
+    public struct Settings
     {
-        public const string Tool = "Sitecore Constants Generator - FieldIds.tt";
-        public const string ToolVersion = "1.0";
-        public const string ItemWebApiVersion = "v1";
-        public const string FieldsQuery = "{0}//*";
-        public const string TemplatesQuery = "{0}//*[@@templateid='{1}' or @@templateid='{2}']";
-        public const string RenderingsQuery = "{0}//*";
+        public static readonly string Tool = @"Sitecore Constants Generator - FieldIds.tt";
+        public static readonly string ToolVersion = @"1.0";
+        public static readonly string ItemWebApiVersion = @"v1";
+        public static readonly string FieldsQuery = @"{0}//*";
+        public static readonly string TemplatesQuery = @"{0}//*[@@templateid='{1}' or @@templateid='{2}']";
+        public static readonly string RenderingsQuery = @"{0}//*";
     }
 }

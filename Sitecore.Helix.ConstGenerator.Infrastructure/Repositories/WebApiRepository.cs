@@ -16,19 +16,13 @@
 
     public class WebApiRepository : SitecoreRestApi, IWebApiRepository
     {
-        #region Constructors
-
         public WebApiRepository(string baseUrl = null, string accountSid = null, string secretKey = null,
             bool useAuthenticateRequest = false)
             : base(baseUrl, accountSid, secretKey, useAuthenticateRequest)
         {
         }
-
-        #endregion
-
-        #region Implementation
-
-        public IWebApiRequestResult<Result, Item> RequestFieldsIds(string rootPath)
+        
+        public IWebApiRequestResult<Result, Item> RequestItems(SitecoreActionType actionType, string query)
         {
             try
             {
@@ -49,12 +43,12 @@
                         return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
                     },
                     WebApiConstants.SitecoreUris,
-                    SitecoreActionType.GetFieldsIds,
+                    actionType,
                     Method.GET,
                     new object[]
                     {
                         Settings.ItemWebApiVersion,
-                        HttpUtility.UrlEncode(string.Format(Settings.FieldsQuery, rootPath))
+                        query
                     });
             }
             catch (ApplicationException)
@@ -62,55 +56,10 @@
                 throw;
             }
         }
-
-        public IWebApiRequestResult<Result, Item> RequestTemplatesIds(string rootPath)
+        
+        public async Task<IWebApiRequestResult<Result, Item>> RequestItemsAsync(SitecoreActionType actionType, string query)
         {
-            return this.Call(
-                req =>
-                {
-                    IRestResponse<RestResponse> restResponse = Execute<RestResponse>(req);
-                    JObject jobject = JObject.Parse(restResponse.Content);
-
-                    return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-                },
-                WebApiConstants.SitecoreUris,
-                SitecoreActionType.GetTemplatesIds,
-                Method.GET,
-                new object[]
-                {
-                    Settings.ItemWebApiVersion,
-                    HttpUtility.UrlEncode(string.Format(Settings.TemplatesQuery, rootPath, TemplatesId.TemplateFolderId,
-                        TemplatesId.TemplateId))
-                });
-        }
-
-        public IWebApiRequestResult<Result, Item> RequestRenderingsIds(string rootPath)
-        {
-            return this.Call(
-                req =>
-                {
-                    IRestResponse<RestResponse> restResponse = Execute<RestResponse>(req);
-                    JObject jobject = JObject.Parse(restResponse.Content);
-
-                    return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-                },
-                WebApiConstants.SitecoreUris,
-                SitecoreActionType.GetTemplatesIds,
-                Method.GET,
-                new object[]
-                {
-                    Settings.ItemWebApiVersion,
-                    HttpUtility.UrlEncode(string.Format(Settings.RenderingsQuery, rootPath))
-                });
-        }
-
-        #region Async
-
-        public async Task<IWebApiRequestResult<Result, Item>> RequestFieldsIdsAsync(string rootPath)
-        {
-            try
-            {
-                return await this.CallAsync(
+            return await this.CallAsync(
                     async req =>
                     {
                         IRestResponse<RestResponse> restResponse = await ExecuteAsync<RestResponse>(req);
@@ -126,64 +75,14 @@
 
                         return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
                     },
-                    WebApiConstants.SitecoreUris,
-                    SitecoreActionType.GetFieldsIds,
+                    WebApiConstants.SitecoreUris, 
+                    actionType,
                     Method.GET,
                     new object[]
                     {
                         Settings.ItemWebApiVersion,
-                        HttpUtility.UrlEncode(string.Format(Settings.FieldsQuery, rootPath))
+                        query
                     });
-            }
-            catch (ApplicationException)
-            {
-                throw;
-            }
         }
-
-        public async Task<IWebApiRequestResult<Result, Item>> RequestTemplatesIdsAsync(string rootPath)
-        {
-            return await this.CallAsync(
-                async req =>
-                {
-                    IRestResponse<RestResponse> restResponse = await ExecuteAsync<RestResponse>(req);
-                    JObject jobject = JObject.Parse(restResponse.Content);
-
-                    return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-                },
-                WebApiConstants.SitecoreUris,
-                SitecoreActionType.GetTemplatesIds,
-                Method.GET,
-                new object[]
-                {
-                    Settings.ItemWebApiVersion,
-                    HttpUtility.UrlEncode(string.Format(Settings.TemplatesQuery, rootPath, TemplatesId.TemplateFolderId,
-                        TemplatesId.TemplateId))
-                });
-        }
-
-        public async Task<IWebApiRequestResult<Result, Item>> RequestRenderingsIdsAsync(string rootPath)
-        {
-            return await this.CallAsync(
-                async req =>
-                {
-                    IRestResponse<RestResponse> restResponse = await ExecuteAsync<RestResponse>(req);
-                    JObject jobject = JObject.Parse(restResponse.Content);
-
-                    return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-                },
-                WebApiConstants.SitecoreUris,
-                SitecoreActionType.GetTemplatesIds,
-                Method.GET,
-                new object[]
-                {
-                    Settings.ItemWebApiVersion,
-                    HttpUtility.UrlEncode(string.Format(Settings.RenderingsQuery, rootPath))
-                });
-        }
-
-        #endregion
-
-        #endregion
     }
 }

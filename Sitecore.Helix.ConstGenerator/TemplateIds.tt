@@ -2,12 +2,11 @@
 <#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="EnvDTE" #>
-<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Core.dll" #>
-<#@ assembly name="$(ProjectDir)bin\debug\SitecoreConstGenerator.Infrastructure.dll" #>
+<#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Core.dll" #>
+<#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Infrastructure.dll" #>
 <#@ import namespace="System.IO" #>
-<#@ import namespace="SitecoreConstGenerator.Core.Entities" #>
-<#@ import namespace="SitecoreConstGenerator.Core.Interfaces.Repositories" #>
-<#@ import namespace="SitecoreConstGenerator.Infrastructure.Repositories" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Interfaces.Repositories" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Infrastructure.Repositories" #>
 <#
 /************************************************************
 *															*
@@ -21,37 +20,37 @@
 *					   Urls								    *
 *															*
 ************************************************************/
-	String baseUrl = @"http://YOUR_URL_HERE";
-	String templateRootPath = @"/your/path/here";
+	const string baseUrl = @"http://habitat.dev.local/";
+	const string templateRootPath = @"/sitecore/templates/Feature/Media";
 
 /************************************************************
 *															*
 *					 Authentication						    *
 *															*
 ************************************************************/
-	Boolean useAuthenticatedRequest = false;
-	String userName = @"";
-	String password = @"";
+	const bool useAuthenticatedRequest = false;
+	const string userName = @"";
+	const string password = @"";
 #>
 
 // Auto Generated script
 
 <#
-	var hostServiceProvider = (IServiceProvider)Host;
+	var hostServiceProvider = Host as IServiceProvider;
 	var dte = 
-		(EnvDTE.DTE)hostServiceProvider.GetService(typeof(EnvDTE.DTE));
-	var activeSolutionProjects = (Array)dte.ActiveSolutionProjects;
-	var dteProject = (EnvDTE.Project)activeSolutionProjects.GetValue(0);
+		(EnvDTE.DTE)hostServiceProvider?.GetService(typeof(EnvDTE.DTE));
+	var activeSolutionProjects = (Array)dte?.ActiveSolutionProjects;
+	var dteProject = (EnvDTE.Project)activeSolutionProjects?.GetValue(0);
 	var defaultNamespace = 
-		dteProject.Properties.Item("DefaultNamespace").Value;
+		dteProject?.Properties.Item("DefaultNamespace").Value;
 	var templateDir = Path.GetDirectoryName(Host.TemplateFile);
-	var fullPath = dteProject.Properties.Item("FullPath").Value.ToString();
+	var fullPath = dteProject?.Properties.Item("FullPath").Value.ToString() ?? string.Empty;
 	fullPath = 
 		fullPath.EndsWith("\\") 
 			? fullPath.Substring(0, fullPath.Length-1) 
 			: fullPath;
 	var subNamespace = 
-		templateDir.Replace(fullPath, string.Empty).Replace("\\", ".");
+		templateDir?.Replace(fullPath, string.Empty).Replace("\\", ".");
 	var fileNamespace = string.Concat(defaultNamespace, subNamespace);
 #>
 
@@ -63,9 +62,9 @@ namespace <#= fileNamespace #>
 	try
 	{
 		IT4TemplateRepository templatesRepo = new TemplatesT4TemplateRepository(
-			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest));
+			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest), templateRootPath);
 	
-		var tree = templatesRepo.CreateTree(templateRootPath);
+		var tree = templatesRepo.CreateTree();
 		if(null != tree)
         {
 			foreach(var node in tree)

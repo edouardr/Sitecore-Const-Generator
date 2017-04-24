@@ -35,14 +35,12 @@
             get
             {
                 if (string.IsNullOrEmpty(LongID))
-                    throw new ArgumentNullException(@"LongID");
+                    throw new ArgumentNullException(nameof(LongID));
 
-                if (_parentId.Equals(Guid.Empty))
-                {
-                    var ids = LongID.Split('/');
+                if (!_parentId.Equals(Guid.Empty)) return _parentId;
 
-                    _parentId = new Guid(ids[ids.Count() - 2]);
-                }
+                var ids = LongID.Split('/');
+                _parentId = new Guid(ids[ids.Count() - 2]);
 
                 return _parentId;
             }
