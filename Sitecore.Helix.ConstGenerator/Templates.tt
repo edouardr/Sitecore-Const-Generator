@@ -4,7 +4,11 @@
 <#@ assembly name="EnvDTE" #>
 <#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Core.dll" #>
 <#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Infrastructure.dll" #>
+<#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Kernel.dll" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Constants" #>
+<#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Entities" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Interfaces.Repositories" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Infrastructure.Repositories" #>
 <#
@@ -20,8 +24,8 @@
 *					   Urls								    *
 *															*
 ************************************************************/
-	const string baseUrl = @"http://habitat.dev.local/";
-	const string templateRootPath = @"/sitecore/templates/Feature/Media";
+	const string baseUrl = @"http://YOUR_URL_HERE";
+	const string templateRootPath = @"/your/path/here";
 
 /************************************************************
 *															*
@@ -52,11 +56,59 @@
 	var subNamespace = 
 		templateDir?.Replace(fullPath, string.Empty).Replace("\\", ".");
 	var fileNamespace = string.Concat(defaultNamespace, subNamespace);
+
+	
+    Action<ItemNode> iterateThroughNode = null;
+    iterateThroughNode = delegate(ItemNode node)
+    {
+        if (TemplatesId.TemplateFolderId.Guid.Equals(node.Value.TemplateId))
+        {
+            node.Children?.ForEach(folder => iterateThroughNode(folder));
+            return;
+        }
+
+        if (TemplatesId.TemplateId.Guid.Equals(node.Value.TemplateId))
+        {
+#>
+		public struct <#= Regex.Replace(node.Value.DisplayName, @"\s+", "") #>
+		{
+			public static readonly ID ID  = new ID(@"<#= node.Value.ID.ToString("B") #>");
+
+			public struct Fields
+			{
+<#
+        }
+
+		node.Children?.ForEach(n =>
+		{
+		    if (TemplatesId.TemplateSectionId.Guid.Equals(n.Value.TemplateId))
+		    {
+				node.Children?.ForEach(section => iterateThroughNode(section));
+		    }
+		    else
+		    {
+#>
+				public static readonly ID <#= Regex.Replace(n.Value.DisplayName, @"\s+", "") #> = new ID(@"<#= n.Value.ID.ToString("B") #>");
+<#
+		    }
+		});
+		
+        if (TemplatesId.TemplateId.Guid.Equals(node.Value.TemplateId))
+        {
+#>
+			}
+		}
+
+<#
+        }
+    };
 #>
 
 namespace <#= fileNamespace #>
 {
-    public static class TemplateIds
+	using Sitecore.Data;
+
+    public struct Templates
     {
 <#
 	try
@@ -68,10 +120,8 @@ namespace <#= fileNamespace #>
 		if(null != tree)
         {
 			foreach(var node in tree)
-			{  
-#>
-	<#= templatesRepo.Output(node) #>
-<#
+			{
+				iterateThroughNode(node); 
 			}
         }
 	}

@@ -19,7 +19,8 @@
         {
             _api = repo;
             _actionType = actionType;
-            _query = HttpUtility.UrlEncode(string.Format(query, new object[] { rootPath }.Union(args)));
+            var arguments = new List<object> {rootPath, args.ToList()};
+            _query = HttpUtility.UrlEncode(string.Format(query, rootPath, arguments.ToArray()));
             _rootPath = rootPath;
         }
 
@@ -42,11 +43,11 @@
 
             var items = result.Result.Items;
             if (null == items)
-                throw new NullReferenceException($"No items where found at provided root: ${rootPath}");
+                throw new NullReferenceException(string.Format(Resources.Errors.EXCEPTION_NO_ITEMS_FOR_ROOT, rootPath));
 
             var enumerable = items as Item[] ?? items.ToArray();
             if (!enumerable.Any())
-                throw new NullReferenceException($"No items where found at provided root: ${rootPath}");
+                throw new NullReferenceException(string.Format(Resources.Errors.EXCEPTION_NO_ITEMS_FOR_ROOT, rootPath));
 
             return enumerable
                 .OrderBy(i => i.Path);

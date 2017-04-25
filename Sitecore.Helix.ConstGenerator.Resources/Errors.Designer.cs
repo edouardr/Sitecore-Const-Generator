@@ -61,6 +61,15 @@ namespace Sitecore.Helix.ConstGenerator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No items where found at provided root: {0}.
+        /// </summary>
+        public static string EXCEPTION_NO_ITEMS_FOR_ROOT {
+            get {
+                return ResourceManager.GetString("EXCEPTION_NO_ITEMS_FOR_ROOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web service unavailable.
         /// </summary>
         public static string WS_Unavailable {
