@@ -5,12 +5,13 @@
 <#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Core.dll" #>
 <#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Helix.ConstGenerator.Infrastructure.dll" #>
 <#@ assembly name="$(ProjectDir)\$(OutDir)\Sitecore.Kernel.dll" #>
-<#@ import namespace="System.IO" #>
-<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="EnvDTE" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Constants" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Entities" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Core.Interfaces.Repositories" #>
 <#@ import namespace="Sitecore.Helix.ConstGenerator.Infrastructure.Repositories" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
 <#
 /************************************************************
 *															*
@@ -24,84 +25,84 @@
 *					   Urls								    *
 *															*
 ************************************************************/
-	const string baseUrl = @"http://YOUR_URL_HERE";
-	const string templateRootPath = @"/your/path/here";
+        const string baseUrl = @"http://habitat.dev.local/";
+        const string templateRootPath = @"/sitecore/templates/Feature/Media";
 
 /************************************************************
 *															*
 *					 Authentication						    *
 *															*
 ************************************************************/
-	const bool useAuthenticatedRequest = false;
-	const string userName = @"";
-	const string password = @"";
+        const bool useAuthenticatedRequest = false;
+        const string userName = @"";
+        const string password = @"";
 #>
 
 // Auto Generated script
 
 <#
-	var hostServiceProvider = Host as IServiceProvider;
-	var dte = 
-		(EnvDTE.DTE)hostServiceProvider?.GetService(typeof(EnvDTE.DTE));
-	var activeSolutionProjects = (Array)dte?.ActiveSolutionProjects;
-	var dteProject = (EnvDTE.Project)activeSolutionProjects?.GetValue(0);
-	var defaultNamespace = 
-		dteProject?.Properties.Item("DefaultNamespace").Value;
-	var templateDir = Path.GetDirectoryName(Host.TemplateFile);
-	var fullPath = dteProject?.Properties.Item("FullPath").Value.ToString() ?? string.Empty;
-	fullPath = 
-		fullPath.EndsWith("\\") 
-			? fullPath.Substring(0, fullPath.Length-1) 
-			: fullPath;
-	var subNamespace = 
-		templateDir?.Replace(fullPath, string.Empty).Replace("\\", ".");
-	var fileNamespace = string.Concat(defaultNamespace, subNamespace);
+        var hostServiceProvider = Host as IServiceProvider;
+        var dte =
+            (DTE) hostServiceProvider?.GetService(typeof(DTE));
+        var activeSolutionProjects = (Array) dte?.ActiveSolutionProjects;
+        var dteProject = (Project) activeSolutionProjects?.GetValue(0);
+        var defaultNamespace =
+            dteProject?.Properties.Item("DefaultNamespace").Value;
+        var templateDir = Path.GetDirectoryName(Host.TemplateFile);
+        var fullPath = dteProject?.Properties.Item("FullPath").Value.ToString() ?? string.Empty;
+        fullPath =
+            fullPath.EndsWith("\\")
+                ? fullPath.Substring(0, fullPath.Length - 1)
+                : fullPath;
+        var subNamespace =
+            templateDir?.Replace(fullPath, string.Empty).Replace("\\", ".");
+        var fileNamespace = string.Concat(defaultNamespace, subNamespace);
 
-	
-    Action<ItemNode> iterateThroughNode = null;
-    iterateThroughNode = delegate(ItemNode node)
-    {
-        if (TemplatesId.TemplateFolderId.Guid.Equals(node.Value.TemplateId))
-        {
-            node.Children?.ForEach(folder => iterateThroughNode(folder));
-            return;
-        }
 
-        if (TemplatesId.TemplateId.Guid.Equals(node.Value.TemplateId))
+        Action<ItemNode> iterateThroughNode = null;
+        iterateThroughNode = delegate(ItemNode node)
         {
+            if (TemplatesId.TemplateFolderId.Guid.Equals(node.Value.TemplateId))
+            {
+                node.Children?.ForEach(folder => iterateThroughNode(folder));
+                return;
+            }
+
+            if (TemplatesId.TemplateId.Guid.Equals(node.Value.TemplateId))
+            {
 #>
-		public struct <#= Regex.Replace(node.Value.DisplayName, @"\s+", "") #>
+		public struct <#= Regex.Replace(node.Value.DisplayName, @"[_\s]+", "") #>
 		{
 			public static readonly ID ID  = new ID(@"<#= node.Value.ID.ToString("B") #>");
 
 			public struct Fields
 			{
 <#
-        }
+            }
 
 		node.Children?.ForEach(n =>
-		{
-		    if (TemplatesId.TemplateSectionId.Guid.Equals(n.Value.TemplateId))
-		    {
-				node.Children?.ForEach(section => iterateThroughNode(section));
-		    }
-		    else
-		    {
+            {
+                if (TemplatesId.TemplateSectionId.Guid.Equals(n.Value.TemplateId))
+                {
+                    node.Children?.ForEach(section => iterateThroughNode(section));
+                }
+                else
+                {
 #>
 				public static readonly ID <#= Regex.Replace(n.Value.DisplayName, @"\s+", "") #> = new ID(@"<#= n.Value.ID.ToString("B") #>");
 <#
-		    }
-		});
+                }
+            });
 		
         if (TemplatesId.TemplateId.Guid.Equals(node.Value.TemplateId))
-        {
+            {
 #>
 			}
 		}
 
 <#
-        }
-    };
+            }
+        };
 #>
 
 namespace <#= fileNamespace #>
@@ -112,21 +113,21 @@ namespace <#= fileNamespace #>
     {
 <#
 	try
-	{
-		IT4TemplateRepository templatesRepo = new TemplatesT4TemplateRepository(
-			new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest), templateRootPath);
-	
-		var tree = templatesRepo.CreateTree();
-		if(null != tree)
         {
-			foreach(var node in tree)
-			{
-				iterateThroughNode(node); 
-			}
+            IT4TemplateRepository templatesRepo = new TemplatesT4TemplateRepository(
+                new WebApiRepository(baseUrl, userName, password, useAuthenticatedRequest), templateRootPath);
+
+            var tree = templatesRepo.CreateTree();
+            if (null != tree)
+            {
+                foreach (var node in tree)
+                {
+                    iterateThroughNode(node);
+                }
+            }
         }
-	}
-	catch(Exception ae)
-	{
+        catch (Exception ae)
+        {
 #>
 		// Error while retrieving items. 
 		// Message : <#= ae.Message #>
@@ -135,7 +136,7 @@ namespace <#= fileNamespace #>
 		<#= ae.StackTrace #>
 		*/
 <#
-	}
+        }
 #>
 	}
 }

@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\TemplatesT4TemplateRepository.cs" />
-    <Compile Include="Repositories\RenderingsT4TemplateRepository.cs" />
     <Compile Include="Repositories\WebApiRepository.cs" />
   </ItemGroup>
   <ItemGroup>

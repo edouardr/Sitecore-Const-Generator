@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Tests", "Sitecore.Helix.ConstGenerator.Tests\Sitecore.Helix.ConstGenerator.Tests.csproj", "{BCBF7A36-906D-454B-97C7-77E27FF25848}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
