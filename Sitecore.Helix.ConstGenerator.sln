@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		nuget.config = nuget.config
+		README.nd = README.nd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Tests", "Sitecore.Helix.ConstGenerator.Tests\Sitecore.Helix.ConstGenerator.Tests.csproj", "{BCBF7A36-906D-454B-97C7-77E27FF25848}"

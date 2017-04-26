@@ -11,9 +11,7 @@
   using RestSharp.Authenticators;
   using Sitecore.Helix.ConstGenerator.Core.Interfaces.Api;
   using Sitecore.Helix.ConstGenerator.Resources;
-
-  /// <summary>
-  /// </summary>
+  
   public class RestApi : IRestApi
   {
     private static readonly ILog Logger = LogManager.GetLogger(typeof(RestApi));
@@ -33,9 +31,11 @@
       if (string.IsNullOrEmpty(BaseUrl))
         throw new ArgumentNullException(nameof(baseUrl), @"The base Url is mandatory to create a REST API client.");
     }
-
-
+    
     /// <summary>
+    ///   Basic client creator.
+    ///   Adds ACCEPT header with application/json value.
+    ///   Initializes with basic HTTP authenticator if required.
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -53,12 +53,14 @@
 
     /// <summary>
     ///   Builds a RestRequest.
+    ///   Injects all values to the URLs provided (string format).
+    ///   Formats values to string before that.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="urls"></param>
-    /// <param name="type"></param>
-    /// <param name="method"></param>
-    /// <param name="value"></param>
+    /// <param name="urls">List of endpoints</param>
+    /// <param name="type">selected endpoint</param>
+    /// <param name="method">HTTP verb</param>
+    /// <param name="value">value to inject in URL</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentException"></exception>
     public virtual RestRequest BuildRequest<T>(Dictionary<T, string> urls, T type, Method method, object value)
@@ -69,15 +71,32 @@
       urls.TryGetValue(type, out constUrl);
 
       if (value is DateTime)
-        value = ((DateTime) value).ToString("s");
+      {
+        value = ((DateTime) value).ToString(@"s");
+      }
 
       if (constUrl != null)
+      {
         request.Resource = string.Format(constUrl, value);
+      }
+
       request.Method = method;
 
       return request;
     }
 
+    /// <summary>
+    ///   Builds a RestRequest.
+    ///   Injects all values to the URLs provided (string format).
+    ///   Formats values to string before that.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="urls">List of endpoints</param>
+    /// <param name="type">selected endpoint</param>
+    /// <param name="method">HTTP verb</param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentException"></exception>
     public virtual RestRequest BuildRequest<T>(Dictionary<T, string> urls, T type, Method method, params object[] args)
     {
       var request = new RestRequest();
@@ -151,10 +170,7 @@
     }
 
     public virtual async Task<TResult> CallAsync<TResult, TEnumType>(ServiceRequestAsync<TResult> serviceCall,
-      Dictionary<TEnumType, string> uris,
-      TEnumType enumType,
-      Method httpMethod,
-      object value)
+      Dictionary<TEnumType, string> uris, TEnumType enumType, Method httpMethod, object value)
     {
       return await InvokeAsync(async () =>
       {
@@ -176,10 +192,7 @@
     /// <returns></returns>
     /// <exception cref="System.ApplicationException"></exception>
     public virtual async Task<TResult> CallAsync<TResult, TEnumType>(ServiceRequestAsync<TResult> serviceCall,
-      Dictionary<TEnumType, string> uris,
-      TEnumType enumType,
-      Method httpMethod,
-      params object[] args)
+      Dictionary<TEnumType, string> uris, TEnumType enumType, Method httpMethod, params object[] args)
     {
       return await InvokeAsync(async () =>
       {
@@ -190,10 +203,7 @@
     }
 
     public virtual TResult Call<TResult, TEnumType>(ServiceRequest<TResult> serviceCall,
-      Dictionary<TEnumType, string> uris,
-      TEnumType enumType,
-      Method httpMethod,
-      object value)
+      Dictionary<TEnumType, string> uris, TEnumType enumType, Method httpMethod, object value)
     {
       return Invoke(() =>
       {
@@ -219,26 +229,26 @@
         var result = call();
 
         watch.Stop();
-        Logger.InfoFormat("ExternalAPIsManager.{0} Call Success - ElaspedTime: {1} ms", methodName,
+        Logger.InfoFormat("RestApi.{0} Call Success - ElaspedTime: {1} ms", methodName,
           watch.ElapsedMilliseconds);
 
         return result;
       }
       catch (NotSupportedException nse)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, nse);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, nse);
         throw new ApplicationException(
           string.Format(Errors.WS_Unavailable, HttpUtility.HtmlEncode(methodName)),
           nse);
       }
       catch (ApplicationException ae)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, ae);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, ae);
         throw;
       }
       catch (Exception e)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, e);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, e);
         throw new ApplicationException(
           string.Format(Errors.WS_Unavailable, HttpUtility.HtmlEncode(methodName)), e);
       }
@@ -253,25 +263,25 @@
         var result = await call();
 
         watch.Stop();
-        Logger.InfoFormat("ExternalAPIsManager.{0} Call Success - ElaspedTime: {1} ms", methodName,
+        Logger.InfoFormat("RestApi.{0} Call Success - ElaspedTime: {1} ms", methodName,
           watch.ElapsedMilliseconds);
 
         return result;
       }
       catch (NotSupportedException nse)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, nse);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, nse);
         throw new ApplicationException(
           string.Format(Errors.WS_Unavailable, HttpUtility.HtmlEncode(methodName)), nse);
       }
       catch (ApplicationException ae)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, ae);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, ae);
         throw;
       }
       catch (Exception e)
       {
-        Logger.FatalFormat("ExternalAPIsManager.{0} Call Failed - Exception: {1}", methodName, e);
+        Logger.FatalFormat("RestApi.{0} Call Failed - Exception: {1}", methodName, e);
         throw new ApplicationException(
           string.Format(Errors.WS_Unavailable, HttpUtility.HtmlEncode(methodName)), e);
       }
@@ -288,22 +298,24 @@
 
       if (!token.IsCancellationRequested
           && client != null)
-        client.ExecuteAsync<T>(request,
-          (response, handle) =>
-          {
-            if (response == null || response.ErrorException != null)
-              if (response != null)
-              {
-                taskCompletionSource.TrySetException(response.ErrorException);
-                throw new NotSupportedException(
-                  response.ErrorException.Message,
-                  response.ErrorException.InnerException);
-              }
+      {
+        client.ExecuteAsync<T>(request, (response, handle) =>
+        {
+          if (response == null) throw new NotSupportedException();
 
-            if (response != null) taskCompletionSource.TrySetResult(response);
-          });
+          if (response.ErrorException != null)
+          {
+            taskCompletionSource.TrySetException(response.ErrorException);
+            throw new NotSupportedException(response.ErrorException.Message, response.ErrorException.InnerException);
+          }
+
+          taskCompletionSource.TrySetResult(response);
+        });
+      }
       else
+      {
         taskCompletionSource.TrySetCanceled();
+      }
 
       return taskCompletionSource.Task;
     }

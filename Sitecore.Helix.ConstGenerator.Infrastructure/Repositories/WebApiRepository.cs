@@ -23,49 +23,35 @@
 
     public IWebApiRequestResult<Result, Item> RequestItems(SitecoreActionType actionType, string query)
     {
-      return Call(
-        req =>
-        {
-          var restResponse = Execute<RestResponse>(req);
-          var jobject = JObject.Parse(restResponse.Content);
+      return Call(req =>
+      {
+        var restResponse = Execute<RestResponse>(req);
+        var jobject = JObject.Parse(restResponse.Content);
 
-          switch (restResponse.Data.StatusCode)
-          {
-            case HttpStatusCode.BadRequest:
-            case HttpStatusCode.Forbidden:
-            case HttpStatusCode.Unauthorized:
-              throw new ApplicationException(Errors.WS_Unavailable);
-          }
+        if (restResponse.Data.StatusCode == HttpStatusCode.BadRequest ||
+            restResponse.Data.StatusCode == HttpStatusCode.Forbidden ||
+            restResponse.Data.StatusCode == HttpStatusCode.Unauthorized)
+          throw new ApplicationException(Errors.WS_Unavailable);
 
-          return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-        },
-        WebApiConstants.SitecoreUris,
-        actionType,
-        Method.GET, Settings.ItemWebApiVersion, query);
+        return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
+      }, WebApiConstants.SitecoreUris, actionType, Method.GET, Settings.ItemWebApiVersion, query);
     }
 
     public async Task<IWebApiRequestResult<Result, Item>> RequestItemsAsync(SitecoreActionType actionType,
       string query)
     {
-      return await CallAsync(
-        async req =>
-        {
-          var restResponse = await ExecuteAsync<RestResponse>(req);
-          var jobject = JObject.Parse(restResponse.Content);
+      return await CallAsync(async req =>
+      {
+        var restResponse = await ExecuteAsync<RestResponse>(req);
+        var jobject = JObject.Parse(restResponse.Content);
 
-          switch (restResponse.Data.StatusCode)
-          {
-            case HttpStatusCode.BadRequest:
-            case HttpStatusCode.Forbidden:
-            case HttpStatusCode.Unauthorized:
-              throw new ApplicationException(Errors.WS_Unavailable);
-          }
+        if (restResponse.Data.StatusCode == HttpStatusCode.BadRequest ||
+            restResponse.Data.StatusCode == HttpStatusCode.Forbidden ||
+            restResponse.Data.StatusCode == HttpStatusCode.Unauthorized)
+          throw new ApplicationException(Errors.WS_Unavailable);
 
-          return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
-        },
-        WebApiConstants.SitecoreUris,
-        actionType,
-        Method.GET, Settings.ItemWebApiVersion, query);
+        return JsonConvert.DeserializeObject<RequestResult>(jobject.ToString());
+      }, WebApiConstants.SitecoreUris, actionType, Method.GET, Settings.ItemWebApiVersion, query);
     }
   }
 }

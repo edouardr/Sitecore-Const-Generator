@@ -10,16 +10,11 @@
       : base(baseUrl, accountSid, secretKey, useAuthenticateRequest)
     {
     }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
+    
     public override RestClient GetClient(RestRequest request)
     {
       var client = new RestClient {BaseUrl = new Uri(BaseUrl)};
-
-      // headers used on every request
+      
       request.AddHeader(@"accept", @"application/json");
 
       if (!UseAuthenticateRequest) return client;

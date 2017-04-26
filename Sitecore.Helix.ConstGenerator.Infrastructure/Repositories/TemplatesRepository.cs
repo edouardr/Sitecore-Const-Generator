@@ -6,20 +6,13 @@
   using Sitecore.Helix.ConstGenerator.Core.Entities;
   using Sitecore.Helix.ConstGenerator.Core.Interfaces.Repositories;
 
-  public class TemplatesT4TemplateRepository : BaseRepository
+  public class TemplatesRepository : BaseRepository
   {
     private readonly string _rootPath;
 
-    public TemplatesT4TemplateRepository(IWebApiRepository api, string rootPath)
+    public TemplatesRepository(IWebApiRepository api, string rootPath)
       : base(
         api, rootPath, SitecoreActionType.GetTemplatesIds, Settings.TemplatesQuery)
-    {
-      _rootPath = rootPath;
-    }
-
-    protected TemplatesT4TemplateRepository(IWebApiRepository api, string rootPath, SitecoreActionType actionType,
-      string query)
-      : base(api, rootPath, actionType, query)
     {
       _rootPath = rootPath;
     }
