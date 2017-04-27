@@ -19,8 +19,8 @@
 *						Settings						    *
 *															*
 ************************************************************/
-  String baseUrl = @"http://YOUR_URL_HERE";
-  String templateRootPath = @"/your/path/here";
+  const string baseUrl = @"http://YOUR_URL_HERE";
+  const string templateRootPath = @"/your/path/here";
 
 /************************************************************
 *															*
