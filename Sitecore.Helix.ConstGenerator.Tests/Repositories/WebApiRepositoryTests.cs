@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sitecore.Helix.ConstGenerator.Tests.Repositories
+﻿namespace Sitecore.Helix.ConstGenerator.Tests.Repositories
 {
+  using NUnit.Framework;
+
+  [TestFixture]
   public class WebApiRepositoryTests
   {
+
+
+    [Test]
     public void ShouldThrowExceptionIfBadRequest()
     {
 
     }
 
+    [Test]
     public void ShouldThrowExceptionIfUnauthorized()
     {
 
     }
 
+    [Test]
     public void ShouldThrowExceptionIfForbidden()
     {
 
     }
 
+    [Test]
     public void ShouldParseObjectIfRequestSuccess()
     {
 
