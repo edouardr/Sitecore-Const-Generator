@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator", "Sitecore.Helix.ConstGenerator\Sitecore.Helix.ConstGenerator.csproj", "{BB3EF3BF-F172-4992-9CB1-A3223799D8B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Core", "Sitecore.Helix.ConstGenerator.Core\Sitecore.Helix.ConstGenerator.Core.csproj", "{DE26DCB3-9E19-4D7C-B9CD-404B39B23A95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Infrastructure", "Sitecore.Helix.ConstGenerator.Infrastructure\Sitecore.Helix.ConstGenerator.Infrastructure.csproj", "{7636E338-2913-484D-9312-590607DD03E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Resources", "Sitecore.Helix.ConstGenerator.Resources\Sitecore.Helix.ConstGenerator.Resources.csproj", "{00F6BE8D-61B5-440E-A4CD-A268F7D63127}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{544F2108-6697-4FED-BF74-9AD02D2D9E4C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		nuget.config = nuget.config
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Helix.ConstGenerator.Tests", "Sitecore.Helix.ConstGenerator.Tests\Sitecore.Helix.ConstGenerator.Tests.csproj", "{BCBF7A36-906D-454B-97C7-77E27FF25848}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB3EF3BF-F172-4992-9CB1-A3223799D8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3EF3BF-F172-4992-9CB1-A3223799D8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3EF3BF-F172-4992-9CB1-A3223799D8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3EF3BF-F172-4992-9CB1-A3223799D8B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE26DCB3-9E19-4D7C-B9CD-404B39B23A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE26DCB3-9E19-4D7C-B9CD-404B39B23A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE26DCB3-9E19-4D7C-B9CD-404B39B23A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE26DCB3-9E19-4D7C-B9CD-404B39B23A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7636E338-2913-484D-9312-590607DD03E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7636E338-2913-484D-9312-590607DD03E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7636E338-2913-484D-9312-590607DD03E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7636E338-2913-484D-9312-590607DD03E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F6BE8D-61B5-440E-A4CD-A268F7D63127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCBF7A36-906D-454B-97C7-77E27FF25848}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
