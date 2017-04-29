@@ -70,6 +70,15 @@ namespace Sitecore.Helix.ConstGenerator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Result was not expected.
+        /// </summary>
+        public static string EXCEPTION_NOT_EXPECTED_RESULT {
+            get {
+                return ResourceManager.GetString("EXCEPTION_NOT_EXPECTED_RESULT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web service unavailable.
         /// </summary>
         public static string WS_Unavailable {

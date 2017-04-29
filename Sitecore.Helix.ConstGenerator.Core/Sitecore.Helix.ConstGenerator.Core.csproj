@@ -56,11 +56,11 @@
     <Compile Include="Entities\RequestResult.cs" />
     <Compile Include="Entities\Result.cs" />
     <Compile Include="Interfaces\Api\IRestApi.cs" />
-    <Compile Include="Interfaces\Entities\IWebApiItem.cs" />
-    <Compile Include="Interfaces\Entities\IWebApiRequestResult.cs" />
+    <Compile Include="Interfaces\Entities\ISitecoreWebApiItem.cs" />
+    <Compile Include="Interfaces\Entities\ISitecoreWebApiRequestResult.cs" />
     <Compile Include="Interfaces\Entities\IWebApiResult.cs" />
     <Compile Include="Interfaces\Repositories\IT4TemplateRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IWebApiRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ISitecoreWebApiRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

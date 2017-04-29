@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EXCEPTION_NOT_EXPECTED_RESULT" xml:space="preserve">
+    <value>Result was not expected</value>
+  </data>
   <data name="EXCEPTION_NO_ITEMS_FOR_ROOT" xml:space="preserve">
     <value>No items where found at provided root: {0}</value>
     <comment>{0}: root path value</comment>

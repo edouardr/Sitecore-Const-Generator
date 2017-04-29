@@ -1,11 +1,11 @@
 ﻿namespace Sitecore.Helix.ConstGenerator.Core.Entities
 {
-  using Sitecore.Helix.ConstGenerator.Core.Interfaces.Entities;
+    using Sitecore.Helix.ConstGenerator.Core.Interfaces;
 
-  public class RequestResult : IWebApiRequestResult<Result, Item>
-  {
-    public int StatusCode { get; set; }
+    public class RequestResult : ISitecoreWebApiRequestResult<Result, Item>
+    {
+        public int StatusCode { get; set; }
 
-    public Result Result { get; set; }
-  }
+        public Result Result { get; set; }
+    }
 }

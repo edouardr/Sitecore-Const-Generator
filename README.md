@@ -40,7 +40,7 @@ Open the Template.tt. Enter the correct values in the below sections.
 ```C#
 /************************************************************
 *															*
-*						Settings						    *
+*						Settings							*
 *															*
 ************************************************************/
   const string baseUrl = @"http://YOUR_URL_HERE";
@@ -48,7 +48,7 @@ Open the Template.tt. Enter the correct values in the below sections.
 
 /************************************************************
 *															*
-*					 Authentication						    *
+*					 Authentication							*
 *															*
 ************************************************************/
   const bool useAuthenticatedRequest = false;
